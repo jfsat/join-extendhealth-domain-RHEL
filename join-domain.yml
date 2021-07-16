@@ -21,14 +21,14 @@
       - restart realmd
     
   - name: Install pexpect using pip
-      pip:
-        name: pexpect
+    pip:
+      name: pexpect
     
   - name: Join system to AD and add the computer object in the Linux OU
-      expect:
-        command: /bin/bash -c "/usr/sbin/realm join --user={{ bind_user }} --computer-ou=OU=SandBox,OU=Servers,DC=extendhealth,DC=com extendhealth.com"
-        responses:
-          Password for *: "{{ bind_password }}"
+    expect:
+      command: /bin/bash -c "/usr/sbin/realm join --user={{ bind_user }} --computer-ou=OU=SandBox,OU=Servers,DC=extendhealth,DC=com extendhealth.com"
+      responses:
+        Password for *: "{{ bind_password }}"
 
   - name: Add default_domain_suffix to sssd.conf
     lineinfile:
@@ -57,12 +57,12 @@
 %technology\ management\ specialists\ role@extendhealth.com   ALL=(ALL) ALL'
 
   handlers:
-    - name: restart realmd
-      service:
-        name: realmd
-        state: restarted
+  - name: restart realmd
+    service:
+      name: realmd
+      state: restarted
 
-    - name: restart sssd
-      service:
-        name: sssd
-        state: restarted
+  - name: restart sssd
+    service:
+      name: sssd
+      state: restarted
