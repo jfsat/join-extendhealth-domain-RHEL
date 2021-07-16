@@ -1,0 +1,19 @@
+---
+- hosts: txd3-confluence.extendhealth.com, txd2-confluence.extendhealth.com
+  vars_prompt:
+  - name: ansible_user
+    prompt: "Enter ansible user which has sudo access"
+    private: no
+    
+  - name: ansible_ssh_pass
+    prompt: "Enter password for ansible user"
+    private: yes
+    
+  - name: ansible_sudo_pass
+    prompt: "Enter sudo password for user"
+    private: yes
+  gather_facts: yes
+  serial: 1
+  tasks:
+    - debug: var=ansible_python_interpreter
+    - debug: var=ansible_python_version
