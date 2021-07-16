@@ -1,6 +1,5 @@
 ---
 - name: Install tools and join realm
-  ansible_python_interpreter: /usr/local/bin/python3.8
   hosts: 10.250.234.181
   gather_facts: no
   become: yes
