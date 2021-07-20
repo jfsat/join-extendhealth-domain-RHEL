@@ -15,30 +15,42 @@
       prompt: "Local Admin (for installing packages)"
       private: no
       
-#    - name: "admin_password"
-#      prompt: "Local Admin Password"
-#      private: yes
-#  become_user: {{ local_user }}
-  become: yes
-  become_method: sudo
+    - name: "admin_password"
+      prompt: "Local Admin Password"
+      private: yes
+#  become_user: {{ local_admin }}
+#  become: yes
+#  become_method: sudo
     
   tasks:
   - name: Install the required packages
-    yum:
+    apt:
       name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-tools,ntpdate,ntp,python-pip
       state: present
     notify:
       - restart realmd
+    become: yes
+    become_user: {{ local_admin }}
+    ansible_become_password: {{ admin_password }}
+    become_method: sudo
     
   - name: Install pexpect using pip
     pip:
       name: pexpect
+    become: yes
+    become_user: {{ local_admin }}
+    ansible_become_password: {{ admin_password }}
+    become_method: sudo
     
   - name: Join system to AD and add the computer object in the Linux OU
     expect:
       command: /bin/bash -c "/usr/sbin/realm join --user={{ bind_user }} --computer-ou=OU=SandBox,OU=Servers,DC=extendhealth,DC=com extendhealth.com"
       responses:
         Password for *: "{{ bind_password }}"
+    become: yes
+    become_user: {{ local_admin }}
+    ansible_become_password: {{ admin_password }}
+    become_method: sudo
 
   - name: Add default_domain_suffix to sssd.conf
     lineinfile:
@@ -47,9 +59,17 @@
       insertafter: '^\[sssd\]'
     notify:
       - restart sssd
+    become: yes
+    become_user: {{ local_admin }}
+    ansible_become_password: {{ admin_password }}
+    become_method: sudo
         
   - name: Allow the technology management specialists role AD group to logon to the system
     command: /bin/bash -c "/usr/sbin/realm permit -g technology\ management\ specialists\ role@extendhealth.com"
+    become: yes
+    become_user: {{ local_admin }}
+    ansible_become_password: {{ admin_password }}
+    become_method: sudo
     
   - name: Add sudo user
     copy:
