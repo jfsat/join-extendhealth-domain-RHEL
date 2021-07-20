@@ -18,7 +18,7 @@
     - name: "admin_password"
       prompt: "Local Admin Password"
       private: yes
-#  become_user: {{ local_admin }}
+#  become_user: "{{ local_admin }}"
 #  become: yes
 #  become_method: sudo
     
@@ -30,7 +30,7 @@
     notify:
       - restart realmd
     become: yes
-    become_user: {{ local_admin }}
+    become_user: "{{ local_admin }}"
     ansible_become_password: {{ admin_password }}
     become_method: sudo
     
