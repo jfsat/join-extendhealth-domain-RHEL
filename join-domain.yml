@@ -40,7 +40,7 @@
   tasks:
   - name: Install the required packages
     apt:
-      name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-bin,ntpdate,ntp,python-pip
+      name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-bin,ntpdate,ntp,python3-pip
       state: present
     notify:
       - restart realmd
