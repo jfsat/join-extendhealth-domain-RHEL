@@ -11,10 +11,11 @@
     - name: ansible_ssh_pass
       prompt: "Enter password for ansible user"
       private: yes
+      confirm: yes
     
-    - name: ansible_sudo_pass
-      prompt: "Enter sudo password for user"
-      private: yes
+#    - name: ansible_sudo_pass
+#      prompt: "Enter sudo password for user"
+#      private: yes
       
     - name: "bind_user"
       prompt: "AD user with access to join realm"
@@ -23,6 +24,7 @@
     - name: "bind_password"
       prompt: "Password for AD user with access to join realm"
       private: yes
+      confirm: yes
       
 #    - name: "local_admin"
 #      prompt: "Local Admin (for installing packages)"
