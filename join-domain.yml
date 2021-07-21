@@ -13,9 +13,10 @@
       private: yes
       confirm: yes
     
-#    - name: ansible_sudo_pass
-#      prompt: "Enter sudo password for user"
-#      private: yes
+    - name: ansible_sudo_pass
+      prompt: "Enter sudo password for user"
+      private: yes
+      confirm: yes
       
     - name: "bind_user"
       prompt: "AD user with access to join realm"
