@@ -74,7 +74,7 @@
       dest: /etc/sudoers.d/91_ansible
       content: |
         'svc-ansible-prod ALL=(ALL) NOPASSWD: ALL
-        {{ ansible_user }}  ALL=(ALL) ALL'
+        jbentley  ALL=(ALL) ALL'
     
   - name: Add sudo groups
     copy:
