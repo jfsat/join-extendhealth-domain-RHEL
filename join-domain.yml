@@ -67,7 +67,7 @@
       - restart sssd
         
   - name: Allow a bunch of roles to logon to the system
-    command: /bin/bash -c "/usr/sbin/realm permit -g technology\ management\ specialists\ role@extendhealth.com %admin@extendhealth.com server\ administrators\ all@extendhealth.com devops\ engineer\ role@extendhealth.com site\ reliability\ engineering\ role@extendhealth.com technology\ management\ specialists\ role@extendhealth.com"
+    command: /bin/bash -c "/usr/sbin/realm permit -a"
     
 #  - name: Add sudo user
  #   copy:
