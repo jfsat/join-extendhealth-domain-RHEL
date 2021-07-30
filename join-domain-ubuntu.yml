@@ -58,11 +58,16 @@
       responses:
         Password for *: "{{ bind_password }}"
 
-  - name: Add default_domain_suffix to sssd.conf
+  - name: Add default_domain_suffix to sssd.conf and unrequire FQDNs
     lineinfile:
       dest: /etc/sssd/sssd.conf
       line: 'default_domain_suffix = extendhealth.com'
       insertafter: '^\[sssd\]'
+    replace:
+      dest: /etc/sssd/sssd.conf
+      regexp: 'use_fully_qualified_names = True'
+      replace: 'use_fully_qualified_names = False'
+      backup: yes
     notify:
       - restart sssd
         
