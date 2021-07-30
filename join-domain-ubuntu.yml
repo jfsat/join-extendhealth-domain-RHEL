@@ -27,17 +27,8 @@
       private: yes
       confirm: yes
       
-#    - name: "local_admin"
-#      prompt: "Local Admin (for installing packages)"
-#      private: no
-      
-#    - name: "admin_password"
-#      prompt: "Local Admin Password"
-#      private: yes
   become: yes
-#  become_user: "{{ local_admin }}"
   remote_user: "{{ ansible_user }}"
-#  ansible_become_password: "{{ admin_password }}"
   become_method: sudo
     
   tasks:
@@ -67,7 +58,7 @@
     notify:
       - restart sssd
         
-  - name: Allow a bunch of roles to logon to the system
+  - name: Allow (permit) everybody to logon to the system
     command: /bin/bash -c "/usr/sbin/realm permit -a"
     
   - name: Add sudo user
