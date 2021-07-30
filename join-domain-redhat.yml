@@ -1,6 +1,6 @@
 ---
 - name: Install tools and join realm
-  hosts: changeThis
+  hosts: txd1-deleteme
   gather_facts: no
   vars_prompt:
   
