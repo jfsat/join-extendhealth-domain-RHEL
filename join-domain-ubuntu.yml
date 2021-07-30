@@ -69,22 +69,22 @@
   - name: Allow a bunch of roles to logon to the system
     command: /bin/bash -c "/usr/sbin/realm permit -a"
     
-#  - name: Add sudo user
- #   copy:
-  #    dest: /etc/sudoers.d/91_ansible
-   #   content: |
-    #    'svc-ansible-prod ALL=(ALL) NOPASSWD: ALL
-     #   jbentley  ALL=(ALL) ALL'
+  - name: Add sudo user
+    copy:
+      dest: /etc/sudoers.d/91_ansible
+      content: |
+        svc-ansible-prod ALL=(ALL) NOPASSWD: ALL
+        {{ ansible_user }}  ALL=(ALL) ALL
     
   - name: Add sudo groups
     copy:
       dest: /etc/sudoers.d/90_domain
       content: |
-        '%admin@extendhealth.com   ALL=(ALL) ALL
+        %admin@extendhealth.com   ALL=(ALL) ALL
         %server\ administrators\ all@extendhealth.com   ALL=(ALL) ALL
         %devops\ engineer\ role@extendhealth.com   ALL=(ALL) ALL
         %site\ reliability\ engineering\ role@extendhealth.com   ALL=(ALL) ALL
-        %technology\ management\ specialists\ role@extendhealth.com   ALL=(ALL) ALL'
+        %technology\ management\ specialists\ role@extendhealth.com   ALL=(ALL) ALL
 
   handlers:
   - name: restart realmd
