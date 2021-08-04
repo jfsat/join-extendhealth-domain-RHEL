@@ -1,0 +1,88 @@
+---
+- name: Install tools and join realm
+  hosts: txd2-domaintest
+  gather_facts: no
+  vars_prompt:
+  
+    - name: ansible_user
+      prompt: "Enter ansible user which has sudo access"
+      private: no
+    
+    - name: ansible_ssh_pass
+      prompt: "Enter password for ansible user"
+      private: yes
+      confirm: yes
+    
+    - name: ansible_sudo_pass
+      prompt: "Enter sudo password for user"
+      private: yes
+      confirm: yes
+      
+    - name: "bind_user"
+      prompt: "AD user with access to join realm"
+      private: no
+      
+    - name: "bind_password"
+      prompt: "Password for AD user with access to join realm"
+      private: yes
+      confirm: yes
+      
+  become: yes
+  remote_user: "{{ ansible_user }}"
+  become_method: sudo
+    
+  tasks:
+  - name: Install the required packages
+    yum:
+      name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-tools,ntpdate,ntp,python-pip
+      state: present
+    notify:
+      - restart realmd
+    
+  - name: Install pexpect using pip
+    pip:
+      name: pexpect
+    
+  - name: Join system to AD and add the computer object in the Linux OU
+    expect:
+      command: /bin/bash -c "/usr/sbin/realm join --user={{ bind_user }} --computer-ou=OU=SandBox,OU=Servers,DC=extendhealth,DC=com extendhealth.com"
+      responses:
+        Password for *: "{{ bind_password }}"
+
+  - name: Add default_domain_suffix to sssd.conf
+    lineinfile:
+      dest: /etc/sssd/sssd.conf
+      line: 'default_domain_suffix = extendhealth.com'
+      insertafter: '^\[sssd\]'
+    notify:
+      - restart sssd
+        
+  - name: Allow everybody to logon to the system
+    command: /bin/bash -c "/usr/sbin/realm permit -a"
+    
+  - name: Add sudo user
+    copy:
+      dest: /etc/sudoers.d/91_ansible
+      content: |
+        svc-ansible-prod ALL=(ALL) NOPASSWD: ALL
+        {{ ansible_user }}  ALL=(ALL)  ALL
+    
+  - name: Add sudo groups
+    copy:
+      dest: /etc/sudoers.d/90_domain
+      content: |
+        %admin@extendhealth.com   ALL=(ALL) ALL
+        %server\ administrators\ all@extendhealth.com   ALL=(ALL) ALL
+        %devops\ engineer\ role@extendhealth.com   ALL=(ALL) ALL
+        %site\ reliability\ engineering\ role@extendhealth.com   ALL=(ALL) ALL
+        %technology\ management\ specialists\ role@extendhealth.com   ALL=(ALL) ALL
+  handlers:
+  - name: restart realmd
+    service:
+      name: realmd
+      state: restarted
+
+  - name: restart sssd
+    service:
+      name: sssd
+      state: restarted
