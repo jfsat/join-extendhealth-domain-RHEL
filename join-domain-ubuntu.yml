@@ -69,6 +69,9 @@
   - name: Allow (permit) everybody to logon to the system
     command: /bin/bash -c "/usr/sbin/realm permit -a"
     
+  - name: Enable making a home dir for new users
+    command: pam-auth-update --enable mkhomedir
+    
   - name: Add sudo user
     copy:
       dest: /etc/sudoers.d/91_ansible
