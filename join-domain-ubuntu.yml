@@ -85,8 +85,6 @@
         %devops\ engineer\ role@extendhealth.com   ALL=(ALL) ALL
         %site\ reliability\ engineering\ role@extendhealth.com   ALL=(ALL) ALL
         %technology\ management\ specialists\ role@extendhealth.com   ALL=(ALL) ALL
-  
-  - name: 
 
   handlers:
   - name: restart realmd
