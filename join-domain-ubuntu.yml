@@ -57,6 +57,14 @@
       backup: yes
     notify:
       - restart sssd
+  
+  - name: Ignore unreadable AD GPO
+    lineinfile:
+      path: /etc/sssd/sssd.conf
+      regexp: '^ad_gpo_ignore_unreadable ='
+      line: ad_gpo_ignore_unreadable = True
+    notify:
+      - restart sssd
         
   - name: Allow (permit) everybody to logon to the system
     command: /bin/bash -c "/usr/sbin/realm permit -a"
@@ -77,6 +85,8 @@
         %devops\ engineer\ role@extendhealth.com   ALL=(ALL) ALL
         %site\ reliability\ engineering\ role@extendhealth.com   ALL=(ALL) ALL
         %technology\ management\ specialists\ role@extendhealth.com   ALL=(ALL) ALL
+  
+  - name: 
 
   handlers:
   - name: restart realmd
