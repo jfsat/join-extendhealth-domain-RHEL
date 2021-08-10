@@ -39,25 +39,30 @@
       state: present
     notify:
       - restart realmd
-# I'm pulling this out because pexpect is getting installed by dnf. This always showed up green (already done).    
-#  - name: Install pexpect using pip
- #   pip:
-  #    name: pexpect
-    
+
   - name: Join system to AD and add the computer object in the Linux OU
     expect:
       command: /bin/bash -c "/usr/sbin/realm join --user={{ bind_user }} --computer-ou=OU=SandBox,OU=Servers,DC=extendhealth,DC=com extendhealth.com"
       responses:
         Password for *: "{{ bind_password }}"
 
-  - name: Add default_domain_suffix to sssd.conf
-    lineinfile:
+  - name: Unrequire FQDNs
+    replace:
       dest: /etc/sssd/sssd.conf
-      line: 'default_domain_suffix = extendhealth.com'
-      insertafter: '^\[sssd\]'
+      regexp: 'use_fully_qualified_names = True'
+      replace: 'use_fully_qualified_names = False'
+      backup: yes
     notify:
       - restart sssd
-        
+  
+  - name: Ignore unreadable AD GPO
+    lineinfile:
+      path: /etc/sssd/sssd.conf
+      regexp: '^ad_gpo_ignore_unreadable ='
+      line: ad_gpo_ignore_unreadable = True
+    notify:
+      - restart sssd
+  
   - name: Allow everybody to logon to the system
     command: /bin/bash -c "/usr/sbin/realm permit -a"
     
