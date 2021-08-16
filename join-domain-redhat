@@ -5,18 +5,18 @@
   vars_prompt:
   
     - name: ansible_user
-      prompt: "Enter ansible user which has sudo access"
+      prompt: "Enter sudo user on remote machine"
       private: no
     
     - name: ansible_ssh_pass
-      prompt: "Enter password for ansible user"
+      prompt: "Enter user password for SSH authentication"
       private: yes
-      confirm: yes
+      #confirm: yes
     
     - name: ansible_sudo_pass
-      prompt: "Enter sudo password for user"
+      prompt: "Enter user password for sudo access"
       private: yes
-      confirm: yes
+      #confirm: yes
       
     - name: "bind_user"
       prompt: "AD user with access to join realm"
@@ -25,13 +25,14 @@
     - name: "bind_password"
       prompt: "Password for AD user with access to join realm"
       private: yes
-      confirm: yes
+      #confirm: yes
       
   become: yes
   remote_user: "{{ ansible_user }}"
   become_method: sudo
     
   tasks:
+
   - name: Install the required packages
     yum:
       name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-tools,ntpdate,ntp,python-pip
