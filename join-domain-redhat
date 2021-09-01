@@ -1,6 +1,6 @@
 ---
 - name: Install tools and join realm
-  hosts: txd1-deleteme
+  hosts: txq1-cnfl.extendhealth.com
   gather_facts: no
   vars_prompt:
   
