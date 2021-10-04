@@ -1,6 +1,6 @@
 ---
 - name: Install tools and join realm
-  hosts: wjs1-cnfl.extendhealth.com
+  hosts: txd1-jiralinux.extendhealth.com, txq1-jiralinux.extendhealth.com
   gather_facts: no
   vars_prompt:
   
