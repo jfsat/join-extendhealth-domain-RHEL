@@ -46,7 +46,7 @@
     
   - name: Join system to AD and add the computer object in the Linux OU
     expect:
-      command: /bin/bash -c "/usr/sbin/realm join --user={{ bind_user }} --computer-ou=OU=SandBox,OU=Servers,DC=extendhealth,DC=com extendhealth.com"
+      command: /bin/bash -c "/usr/sbin/realm join --user={{ bind_user }} --computer-ou={{ oupath }},OU=Servers,DC=extendhealth,DC=com extendhealth.com"
       responses:
         Password for *: "{{ bind_password }}"
 
