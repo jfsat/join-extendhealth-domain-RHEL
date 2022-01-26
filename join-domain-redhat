@@ -35,6 +35,7 @@
 
   - name: Install the required packages
     yum:
+      enablerepo: "extras"
       name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-tools,ntpdate,ntp,epel-release,python-pip
       state: present
     notify:
