@@ -32,8 +32,9 @@
 
   - name: Install the required packages
     yum:
-      enablerepo: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm"
-      name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-tools,ntpdate,ntp,epel-release,python-pip
+#      enablerepo: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm"
+      name: realmd,sssd,oddjob,oddjob-mkhomedir,adcli,samba-common,samba-common-tools,krb5-workstation,authselect-compat,katello*
+#      ntpdate,ntp,epel-release,python-pip
       state: present
     notify:
       - restart realmd
