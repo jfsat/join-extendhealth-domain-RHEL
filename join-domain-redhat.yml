@@ -1,22 +1,19 @@
 ---
 - name: Install tools and join realm
-  hosts: wjd1-jiralinux.extendhealth.com
+  hosts: txd1-deleteme.extendhealth.com
   gather_facts: no
+  vars:
+    ansible_sudo_pass: "{{ ansible_ssh_pass }}"
+
   vars_prompt:
-  
+
     - name: ansible_user
-      prompt: "Enter sudo user on remote machine"
+      prompt: "Enter admin username for new server"
       private: no
-    
+
     - name: ansible_ssh_pass
-      prompt: "Enter user password for SSH authentication"
+      prompt: "Enter password (for new server)"
       private: yes
-      #confirm: yes
-    
-    - name: ansible_sudo_pass
-      prompt: "Enter user password for sudo access"
-      private: yes
-      #confirm: yes
       
     - name: "bind_user"
       prompt: "AD user with access to join realm"
@@ -67,7 +64,7 @@
       dest: /etc/sudoers.d/91_ansible
       content: |
         svc-ansible-prod ALL=(ALL) NOPASSWD: ALL
-        {{ ansible_user }}  ALL=(ALL)  ALL
+#        {{ ansible_user }}  ALL=(ALL)  ALL
     
   - name: Add sudo groups
     copy:
