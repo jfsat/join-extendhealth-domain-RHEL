@@ -67,13 +67,20 @@
     notify:
       - restart sssd
 
-#  - name: Add default_domain_suffix to sssd.conf
-#    lineinfile:
-#      dest: /etc/sssd/sssd.conf
-#      line: 'default_domain_suffix = extendhealth.com'
-#      insertafter: '^\[sssd\]'
-#    notify:
-#      - restart sssd
+  - name: Add cache expiry to sssd.conf
+    lineinfile:
+      dest: /etc/sssd/sssd.conf
+      line: |
+        account_cache_expiration = 2
+        cached_auth_timeout = 3600
+        refresh_expired_interval = 4050
+        
+        [pam]
+        reconnection_retries = 3
+        offline_credentials_expiration = 2
+      insertafter: '^access_provider = ad'
+    notify:
+      - restart sssd
         
   - name: Allow everybody to logon to the system
     command: /bin/bash -c "/usr/sbin/realm permit -a"
